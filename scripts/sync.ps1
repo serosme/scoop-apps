@@ -39,12 +39,15 @@ if ($cfg.shortcuts) { $manifest['shortcuts'] = $cfg.shortcuts }
 if ($cfg.persist) { $manifest['persist'] = $cfg.persist }
 
 $json = $manifest | ConvertTo-Json -Depth 10
-$url = "https://github.com/$($config.channel)/releases/download/$App/$App.json"
 if ($DryRun) { Write-Host $json; return }
 
 $tmp = Join-Path ([System.IO.Path]::GetTempPath()) "$App.json"
 [System.IO.File]::WriteAllText($tmp, $json, (New-Object System.Text.UTF8Encoding($false)))
-$null = gh release view $App --json tagName
-if ($LASTEXITCODE -ne 0) { gh release create $App --latest=false }
-gh release upload $App $tmp --clobber
-if ($LASTEXITCODE -ne 0) { throw "failed to upload manifest: $url" }
+
+try { $null = gh release delete $App --cleanup-tag --yes 2>&1 } catch { }
+
+$target = $env:GITHUB_SHA
+if (-not $target) { $target = gh api "repos/$($config.channel)" --jq .default_branch }
+if (-not $target) { throw "cannot resolve a target commit for tag '$App'" }
+gh release create $App --target $target --latest $tmp
+if ($LASTEXITCODE -ne 0) { throw "failed to create release '$App' at '$target'" }
