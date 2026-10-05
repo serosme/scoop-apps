@@ -8,7 +8,7 @@
       "shortcuts": [
         [
           "wb2api.exe",
-          "WorkBuddy2API Panel",
+          "WorkBuddy2API",
           "-config \"$dir\\config\\config.json\""
         ]
       ],
