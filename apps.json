@@ -1,0 +1,22 @@
+{
+  "channel": "serosme/scoop-apps",
+  "apps": [
+    {
+      "name": "wb2api",
+      "repo": "linguo2625469/workbuddy2api-panel",
+      "asset": "wb2api-panel-v$version-windows-amd64.zip",
+      "shortcuts": [
+        [
+          "wb2api.exe",
+          "WorkBuddy2API Panel",
+          "-config \"$dir\\config\\config.json\""
+        ]
+      ],
+      "persist": [
+        "config",
+        "auths",
+        "data"
+      ]
+    }
+  ]
+}

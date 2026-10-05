@@ -1,0 +1,24 @@
+name: Sync
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: sync
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $cfg = Get-Content apps.json -Raw -Encoding UTF8 | ConvertFrom-Json
+          foreach ($app in @($cfg.apps | Where-Object { -not $_.skip })) { ./scripts/sync.ps1 -App $app.name }
