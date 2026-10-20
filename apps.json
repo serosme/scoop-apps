@@ -3,8 +3,8 @@
   "apps": [
     {
       "name": "wb2api",
-      "repo": "linguo2625469/workbuddy2api-panel",
-      "asset": "wb2api-panel-v$version-windows-amd64.zip",
+      "repo": "misakano7545/workbuddy2api-panel",
+      "asset": "wb2api-panel-$version-windows-amd64.zip",
       "shortcuts": [
         [
           "wb2api.exe",
